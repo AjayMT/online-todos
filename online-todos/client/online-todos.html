@@ -3,11 +3,24 @@
 </head>
 
 <body>
-  {{> hello}}
+  {{> mainContent}}
 </body>
 
-<template name="hello">
-  <h1>Hello World!</h1>
-  {{greeting}}
-  <input type="button" value="Click" />
+<template name="mainContent">
+  {{#if user}}
+  {{> todosUI}}
+  {{else}}
+  {{> loginForm}}
+  {{/if}}
+</template>
+
+<template name="loginForm">
+  <center>
+	<h2>{{loginButtons}} To See Your To-Dos</h2>
+  </center>
+</template>
+
+<template name="todosUI">
+  {{loginButtons}}
+  TODO :)
 </template>
