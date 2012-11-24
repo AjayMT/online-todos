@@ -30,24 +30,80 @@
 	<div class="row-fluid">
 	  <div class="span4">
 		<ul class="nav nav-list well well-small">
-		  <li class="nav-header">Lists</li>
+		  <li class="{{completed}}"><a class="completed">Completed</a></li>
+		  <li class="{{pending}}"><a class="pending">Pending</a></li>
+		  <li class="divider"></li>
+		  <li class="nav-header">My Lists</li>
 		  {{#each lists}}
-		  <li class="{{activeList}} list"><a>{{name}}</a></li>
+		  <li class="{{activeList}}"><a class="list">{{name}}
+			  <button class="close removeList">×</button>
+		  </a></li>
 		  {{else}}
 		  <li class="disabled"><a>No lists yet.</a></li>
 		  {{/each}}
+		  <li class="divider"></li>
+		  <li>
+			<a href="#createList" role="button" class="btn" data-toggle="modal">Add List</a>
+			<div id="createList" class="modal hide fade" tabindex="-1" role="dialog"
+				 aria-labelledby="createListLabel" aria-hidden="true">
+			  <div class="modal-header">
+				<button type="button" class="close"
+						data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="createListLabel">Add List</h3>
+			  </div>
+			  <div class="modal-body">
+				<input type="text" name="listName" placeholder="List name..." />
+			  </div>
+			  <div class="modal-footer">
+				<button class="btn btn-primary saveList" data-dismiss="modal"
+						aria-hidden="true">Save</button>
+			  </div>
+			</div>
+		  </li>
 		</ul>
 	  </div>
 	  <div class="span8">
-		<ul class="unstyled">
-		  <h5>Items</h5>
-		  {{#each items}}
-		  <li><label class="checkbox"><input type="checkbox" class="check" />{{name}}</li>
-		  {{else}}
-		  <li>Nothing scheduled.</li>
-		  {{/each}}
-		</ul>
+		{{#if selectedList}}
+		<table class="table table-condensed">
+		  <thead>
+			<th>Priority</th>
+			<th>Items</th>
+		  </thead>
+		  <tbody>
+			{{#each items}}
+			<tr>
+			  <td width="20%"><input type="checkbox" name="itemCheckbox" class="check" />
+				{{priority}}</td>
+			  <td width="80%">{{name}}<button class="close pull-right removeItem">×</button></td>
+			</tr>
+			{{else}}
+			<tr>
+			  <td></td>
+			  <td>Nothing scheduled.</td>
+			</tr>
+			{{/each}}
+		  </tbody>
+		</table>
+		<a href="#addItem" role="button" class="btn btn-primary" data-toggle="modal">Add Item</a>
+		<div id="addItem" class="modal hide fade" tabindex="-1" role="dialog"
+			 aria-labelledby="addItemLabel" aria-hidden="true">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="addItemLabel">Add Item</h3>
+		  </div>
+		  <div class="modal-body">
+			<input type="text" name="itemName" placeholder="Item name..." /><br />
+			<input type="text" name="itemPriority" placeholder="Priority..." />
+		  </div>
+		  <div class="modal-footer">
+			<button class="btn btn-primary saveItem"
+					data-dismiss="modal" aria-hidden="true">Save</button>
+		  </div>
+		</div>
 	  </div>
+	  {{else}}
+	  Select a list.
+	  {{/if}}
 	</div>
   </div>
 </template>
