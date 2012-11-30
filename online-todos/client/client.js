@@ -1,9 +1,22 @@
-Template.mainContent.user = function () {
-	return Meteor.user();
-}
+Meteor.Router.add({
+	"/": function () {
+		if (Meteor.user()) {
+			Meteor.Router.to("/todos/");
+			return "todosUI";
+		}
+		return "loginForm";
+	},
+	"/todos": function () {
+		if (!Meteor.user()) {
+			Meteor.Router.to("/");
+			return "loginForm";
+		}
+		return "todosUI";
+	}
+});
 
 Template.loginForm.destroyed = function () {
-	Meteor.absoluteUrl(Meteor.userId());
+	Meteor.Router.to("/todos/");
 }
 
 Template.todosUI.lists = function () {
@@ -25,11 +38,9 @@ Template.todosUI.events({
 	},
 	"click input.check": function () {
 		if (this.completed == "true") {
-			Items.update({ list: Session.get("currentList"), user: Meteor.userId() },
-						 { $set: { completed: "" } });
+			Items.update(this._id, { $set: { completed: "" } });
 		} else {
-			Items.update({ list: Session.get("currentList"), user: Meteor.userId() },
-						 { $set: { completed: "true" } });
+			Items.update(this._id, { $set: { completed: "true" } });
 		}
 	},
 	"click button.saveList": function () {
@@ -48,8 +59,12 @@ Template.todosUI.events({
 		document.getElementsByName("itemName")[0].value = "";
 		var priority = parseInt(document.getElementsByName("itemPriority")[0].value);
 		document.getElementsByName("itemPriority")[0].value = "";
-		Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
-					   name: name, priority: priority, completed: "" });
+		if (name != "" && priority) {
+			Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
+						   name: name, priority: priority, completed: "" });
+		} else {
+			alert("We got an error. Check your stuff and try again. (Make sure the priority field is a number.)");
+		}
 	},
 	"click button.removeItem": function () {
 		Items.remove(this._id);
@@ -64,9 +79,10 @@ Template.todosUI.events({
 
 Template.todosUI.items = function () {
 	if (Session.equals("currentList", "completed")) {
-		return Items.find({ user: Meteor.userId(), completed: "true" });
+		return Items.find({ user: Meteor.userId(), completed: "true" },
+						  { sort: { priority: -1 } });
 	} else if (Session.equals("currentList", "pending")) {
-		return Items.find({ user: Meteor.userId(), completed: "" });
+		return Items.find({ user: Meteor.userId(), completed: "" }, { sort: { priority: -1 } });
 	}
 	return Items.find({ list: Session.get("currentList"), user: Meteor.userId() },
 					  { sort: { priority: -1 } });

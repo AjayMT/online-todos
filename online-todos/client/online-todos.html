@@ -3,16 +3,8 @@
 </head>
 
 <body>
-  {{> mainContent}}
+  {{renderPage}}
 </body>
-
-<template name="mainContent">
-  {{#if user}}
-  {{> todosUI}}
-  {{else}}
-  {{> loginForm}}
-  {{/if}}
-</template>
 
 <template name="loginForm">
   <center>
@@ -72,7 +64,12 @@
 		  <tbody>
 			{{#each items}}
 			<tr>
-			  <td width="20%"><input type="checkbox" name="itemCheckbox" class="check" />
+			  <td width="20%">
+				{{#if completed}}
+				<input type="checkbox" name="itemCheckbox" class="check" checked="true" />
+				{{else}}
+				<input type="checkbox" name="itemCheckbox" class="check" />
+				{{/if}}
 				{{priority}}</td>
 			  <td width="80%">{{name}}<button class="close pull-right removeItem">×</button></td>
 			</tr>
