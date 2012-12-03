@@ -58,8 +58,8 @@
 	<div class="row-fluid">
 	  <div class="span4">
 		<ul class="nav nav-list well well-small">
-		  <li class="{{completed}}"><a class="completed">Completed</a></li>
-		  <li class="{{pending}}"><a class="pending">Pending</a></li>
+		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
+		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
 		  <li class="divider"></li>
 		  <li class="nav-header">My Lists</li>
 		  {{#each lists}}
@@ -101,11 +101,7 @@
 			{{#each items}}
 			<tr>
 			  <td width="20%">
-				{{#if completed}}
-				<input type="checkbox" name="itemCheckbox" class="check" checked="true" />
-				{{else}}
-				<input type="checkbox" name="itemCheckbox" class="check" />
-				{{/if}}
+				<input type="checkbox" name="itemCheckbox" class="check" {{completed}} />
 				{{priority}}</td>
 			  <td width="80%">{{name}}<button class="close pull-right removeItem">×</button></td>
 			</tr>

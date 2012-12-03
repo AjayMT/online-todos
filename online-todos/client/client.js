@@ -37,10 +37,10 @@ Template.todosUI.events({
 		}
 	},
 	"click input.check": function () {
-		if (this.completed == "true") {
+		if (this.completed == "checked='true'") {
 			Items.update(this._id, { $set: { completed: "" } });
 		} else {
-			Items.update(this._id, { $set: { completed: "true" } });
+			Items.update(this._id, { $set: { completed: "checked='true'" } });
 		}
 	},
 	"click button.saveList": function () {
@@ -79,23 +79,24 @@ Template.todosUI.events({
 
 Template.todosUI.items = function () {
 	if (Session.equals("currentList", "completed")) {
-		return Items.find({ user: Meteor.userId(), completed: "true" },
+		return Items.find({ user: Meteor.userId(), completed: "checked='true'" },
 						  { sort: { priority: -1 } });
 	} else if (Session.equals("currentList", "pending")) {
-		return Items.find({ user: Meteor.userId(), completed: "" }, { sort: { priority: -1 } });
+		return Items.find({ user: Meteor.userId(), completed: "" },
+						  { sort: { priority: -1 } });
 	}
 	return Items.find({ list: Session.get("currentList"), user: Meteor.userId() },
 					  { sort: { priority: -1 } });
 }
 
-Template.todosUI.completed = function () {
+Template.todosUI.completedList = function () {
 	if (Session.equals("currentList", "completed")) {
 		return "active";
 	}
 	return "";
 }
 
-Template.todosUI.pending = function () {
+Template.todosUI.pendingList = function () {
 	if (Session.equals("currentList", "pending")) {
 		return "active";
 	}
