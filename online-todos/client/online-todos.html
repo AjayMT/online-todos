@@ -61,13 +61,20 @@
 		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
 		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
 		  <li class="divider"></li>
-		  <li class="nav-header">My Lists</li>
+		  <li class="nav-header">Lists</li>
 		  {{#each lists}}
 		  <li class="{{activeList}}"><a class="list">{{name}}
 			  <button class="close removeList">×</button>
 		  </a></li>
 		  {{else}}
 		  <li class="disabled"><a>No lists yet.</a></li>
+		  {{/each}}
+		  <li class="divider"></li>
+		  <li class="nav-header">Tags</li>
+		  {{#each tags}}
+		  <li class="{{activeTag}}"><a class="tag">{{name}}</a></li>
+		  {{else}}
+		  <li class="disabled"><a>No items are tagged.</a></li>
 		  {{/each}}
 		  <li class="divider"></li>
 		  <li>
@@ -113,7 +120,11 @@
 			{{/each}}
 		  </tbody>
 		</table>
+		{{#unless completedList}}
+		{{#unless pendingList}}
 		<a href="#addItem" role="button" class="btn btn-primary" data-toggle="modal">Add Item</a>
+		{{/unless}}
+		{{/unless}}
 		<div id="addItem" class="modal hide fade" tabindex="-1" role="dialog"
 			 aria-labelledby="addItemLabel" aria-hidden="true">
 		  <div class="modal-header">
