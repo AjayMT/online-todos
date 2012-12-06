@@ -6,9 +6,12 @@ take long to finish.
 
 ## Downloading And Running
 
-This app was created with [Meteor](http://meteor.com), so you'll first need to install that -
+This app was created with [Meteor](http://meteor.com) and [Meteorite](http://oortcloud.github.com/meteorite), so you'll
+first need to install those -
 
-    $ curl https://install.meteor.com/ | /bin/sh
+    $ curl https://install.meteor.com/ | /bin/sh # This will install Meteor.
+    $ npm install -g meteorite # You need node.js for this.
+    $ export PATH=/usr/local/share/npm/bin:${PATH} # Add this to your shell config file.
 
 And then you can actually clone and run the project -
 
