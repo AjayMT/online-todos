@@ -17,6 +17,6 @@ And then you can actually clone and run the project -
 
     $ git clone https://github.com/AjayMT/online-todos.git
     $ cd online-todos/online-todos
-    $ meteor run
+    $ mrt run
 
 Visit [localhost:3000](http://localhost:3000) to see the app.
