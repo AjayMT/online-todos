@@ -19,6 +19,17 @@ Template.loginForm.destroyed = function () {
 	Meteor.Router.to("/todos/");
 }
 
+Template.todosUI.tags = function () {
+	return Tags.find({ user: Meteor.userId() }, { sort: { name: 1 } });
+}
+
+Template.todosUI.activeTag = function () {
+	if (Session.equals("currentTag", this._id)) {
+		return "active";
+	}
+	return "";
+}
+
 Template.todosUI.lists = function () {
 	return Lists.find({ user: Meteor.userId() }, { sort: { name: 1 } });
 }
@@ -31,6 +42,13 @@ Template.todosUI.activeList = function () {
 }
 
 Template.todosUI.events({
+	"click a.tag": function () {
+		if (Session.equals("currentTag", this._id)) {
+			Session.set("currentTag", "");
+		} else {
+			Session.set("currentTag", this._id);
+		}
+	},
 	"click a.list": function () {
 		if (Lists.findOne(this._id)) {
 			Session.set("currentList", this._id);
@@ -60,8 +78,12 @@ Template.todosUI.events({
 		var priority = parseInt(document.getElementsByName("itemPriority")[0].value);
 		document.getElementsByName("itemPriority")[0].value = "";
 		if (name != "" && priority) {
+			var tag = Tags.findOne({ user: Meteor.userId(), name: "a tag" });
+			if (tag == null) {
+				Tags.insert({ user: Meteor.userId(), name: "a tag" })
+			}
 			Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
-						   name: name, priority: priority, completed: "" });
+						   name: name, priority: priority, completed: "", tags: ["a tag"] });
 		} else {
 			alert("We got an error. Check your stuff and try again. (Make sure the priority field is a number.)");
 		}
@@ -85,7 +107,7 @@ Template.todosUI.items = function () {
 		return Items.find({ user: Meteor.userId(), completed: "" },
 						  { sort: { priority: -1 } });
 	}
-	return Items.find({ list: Session.get("currentList"), user: Meteor.userId() },
+	return Items.find({ list: Session.get("currentList"), user: Meteor.userId(),
 					  { sort: { priority: -1 } });
 }
 
