@@ -108,6 +108,7 @@ Template.todosUI.items = function () {
 						  { sort: { priority: -1 } });
 	}
 	return Items.find({ list: Session.get("currentList"), user: Meteor.userId(),
+					  tags: [Session.get("currentTag")] },
 					  { sort: { priority: -1 } });
 }
 
