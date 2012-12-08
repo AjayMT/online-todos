@@ -77,19 +77,33 @@ Template.todosUI.events({
 		document.getElementsByName("itemName")[0].value = "";
 		var priority = parseInt(document.getElementsByName("itemPriority")[0].value);
 		document.getElementsByName("itemPriority")[0].value = "";
+		var tagname = document.getElementsByName("itemTag")[0].value;
+		document.getElementsByName("itemTag")[0].value = "";
+		var tags = tagname.split(" ");
 		if (name != "" && priority) {
-			var tag = Tags.findOne({ user: Meteor.userId(), name: "a tag" });
-			if (tag == null) {
-				Tags.insert({ user: Meteor.userId(), name: "a tag" })
+			for (var i = 0; i < tags.length; i++) {
+				var tag = Tags.findOne({ user: Meteor.userId(), name: tags[i] });
+				if (tag == null) {
+					Tags.insert({ user: Meteor.userId(), name: tags[i] })
+				}
 			}
 			Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
-						   name: name, priority: priority, completed: "", tags: ["a tag"] });
+						   name: name, priority: priority, completed: "", tags: tags });
 		} else {
 			alert("We got an error. Check your stuff and try again. (Make sure the priority field is a number.)");
 		}
 	},
 	"click button.removeItem": function () {
+		var tags = this.tags;
+		var id = this._id;
 		Items.remove(this._id);
+		for (var i = 0; i < tags.length; i++) {
+			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
+			if (items.length == 0) {
+				Tags.remove({ name: tags[i], user: Meteor.userId() });
+				Session.set("currentTag", "");
+			}
+		}
 	},
 	"click a.completed": function () {
 		Session.set("currentList", "completed");
@@ -100,15 +114,36 @@ Template.todosUI.events({
 });
 
 Template.todosUI.items = function () {
+	var tag = Tags.findOne(Session.get("currentTag"));
+	if (tag != null) {
+		var name = tag.name;
+	} else {
+		var name = "";
+	}
+	
 	if (Session.equals("currentList", "completed")) {
-		return Items.find({ user: Meteor.userId(), completed: "checked='true'" },
+		if (name == "") {
+			return Items.find({ user: Meteor.userId(), completed: "checked='true'" },
+							  { sort: { priority: 1 } });
+		}
+		return Items.find({ user: Meteor.userId(), completed: "checked='true'",
+							tags: name },
 						  { sort: { priority: -1 } });
 	} else if (Session.equals("currentList", "pending")) {
-		return Items.find({ user: Meteor.userId(), completed: "" },
+		if (name == "") {
+			return Items.find({ user: Meteor.userId(), completed: "" },
+							  { sort: { priority: 1 } });
+		}
+		return Items.find({ user: Meteor.userId(), completed: "",
+							tags: name },
+						  { sort: { priority: -1 } });
+	}
+	if (name == "") {
+		return Items.find({ user: Meteor.userId(), list: Session.get("currentList") },
 						  { sort: { priority: -1 } });
 	}
 	return Items.find({ list: Session.get("currentList"), user: Meteor.userId(),
-					  tags: [Session.get("currentTag")] },
+						tags: name },
 					  { sort: { priority: -1 } });
 }
 
