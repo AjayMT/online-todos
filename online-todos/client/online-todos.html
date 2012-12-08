@@ -29,8 +29,8 @@
 		  <h4>See what's done and what's not</h4>
 		  <p>
 			Want to know everything you've done and everything you need to?<br />
-			See the 'Complete' and 'Pending' lists for all the to-dos that are completed and the
-			all the to-dos that aren't.
+			See the 'Complete', 'Pending' and 'All' lists for all the to-dos that are completed and
+			the all the to-dos that aren't.
 		  </p>
 		</div>
 		<div class="span6">
@@ -62,6 +62,7 @@
 		<ul class="nav nav-list well well-small">
 		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
 		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
+		  <li class="{{allList}}"><a class="all">All</a></li>
 		  <li class="divider"></li>
 		  <li class="nav-header">Lists</li>
 		  {{#each lists}}
@@ -124,7 +125,9 @@
 		</table>
 		{{#unless completedList}}
 		{{#unless pendingList}}
+		{{#unless allList}}
 		<a href="#addItem" role="button" class="btn btn-primary" data-toggle="modal">Add Item</a>
+		{{/unless}}
 		{{/unless}}
 		{{/unless}}
 		<div id="addItem" class="modal hide fade" tabindex="-1" role="dialog"

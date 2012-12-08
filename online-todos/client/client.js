@@ -110,6 +110,9 @@ Template.todosUI.events({
 	},
 	"click a.pending": function () {
 		Session.set("currentList", "pending");
+	},
+	"click a.all": function () {
+		Session.set("currentList", "all");
 	}
 });
 
@@ -137,6 +140,11 @@ Template.todosUI.items = function () {
 		return Items.find({ user: Meteor.userId(), completed: "",
 							tags: name },
 						  { sort: { priority: -1 } });
+	} else if (Session.equals("currentList", "all")) {
+		if (name == "") {
+			return Items.find({ user: Meteor.userId() }, { sort: { priority: -1 } });
+		}
+		return Items.find({ user: Meteor.userId(), tags: name }, { sort: { priority: -1 } });
 	}
 	if (name == "") {
 		return Items.find({ user: Meteor.userId(), list: Session.get("currentList") },
@@ -149,6 +157,13 @@ Template.todosUI.items = function () {
 
 Template.todosUI.completedList = function () {
 	if (Session.equals("currentList", "completed")) {
+		return "active";
+	}
+	return "";
+}
+
+Template.todosUI.allList = function () {
+	if (Session.equals("currentList", "all")) {
 		return "active";
 	}
 	return "";
