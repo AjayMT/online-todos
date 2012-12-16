@@ -19,7 +19,7 @@ Template.loginForm.destroyed = function () {
 	Meteor.Router.to("/todos/");
 }
 
-Template.todosUI.tags = function () {
+Template.todosUI.tagList = function () {
 	return Tags.find({ user: Meteor.userId() }, { sort: { name: 1 } });
 }
 
@@ -81,7 +81,7 @@ Template.todosUI.events({
 			}
 		);
 		Items.remove({ list: this._id, user: Meteor.userId() });
-		Lists.remove({ _id: this._id, user: Meteor.userId() });
+		Lists.remove(this._id);
 		Session.set("currentList", "");
 	},
 	"click button.saveItem": function () {
@@ -92,6 +92,11 @@ Template.todosUI.events({
 		var tagname = document.getElementsByName("itemTag")[0].value;
 		document.getElementsByName("itemTag")[0].value = "";
 		var tags = tagname.split(" ");
+		for (var i = 0; i < tags.length; i++) {
+			if (tags[i] == " " || tags[i] == "") {
+				tags.splice(i, 1);
+			}
+		}
 		if (name != "" && priority) {
 			for (var i = 0; i < tags.length; i++) {
 				var tag = Tags.findOne({ user: Meteor.userId(), name: tags[i] });
@@ -99,8 +104,22 @@ Template.todosUI.events({
 					Tags.insert({ user: Meteor.userId(), name: tags[i] })
 				}
 			}
-			Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
-						   name: name, priority: priority, completed: "", tags: tags });
+			if (Session.equals("editingItem", "") || Session.get("editingItem") == null) {
+				Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
+							   name: name, priority: priority, completed: "", tags: tags });
+			} else {
+				Items.update(Session.get("editingItem"), { $set: { name: name,
+																   priority: priority,
+																   tags: tags } });
+			}
+			var allTags = Tags.find({ user: Meteor.userId() }).fetch();
+			for (var i = 0; i < allTags.length; i++) {
+				var items = Items.find({ user: Meteor.userId(), tags: allTags[i].name }).fetch();
+				if (items.length == 0) {
+					Tags.remove({ user: Meteor.userId(), name: allTags[i].name });
+				}
+			}
+			Session.set("editingItem", "");
 		} else {
 			alert("We got an error. Check your stuff and try again. (Make sure the priority field is a number.)");
 		}
@@ -116,7 +135,21 @@ Template.todosUI.events({
 			}
 		}
 	},
-	"click a.completed": function () {
+	"dblclick tr.itemRow": function () {
+		$("#addItem").modal("show");
+		document.getElementsByName("itemName")[0].value = this.name;
+		document.getElementsByName("itemPriority")[0].value = this.priority;
+		for (var i = 0; i < this.tags.length; i++) {
+			var value = document.getElementsByName("itemTag")[0].value;
+			if (value != "") {
+				document.getElementsByName("itemTag")[0].value = value + " " + this.tags[i];
+			} else {
+				document.getElementsByName("itemTag")[0].value = value + this.tags[i];
+			}
+		}
+		Session.set("editingItem", this._id);
+	},
+ 	"click a.completed": function () {
 		Session.set("currentList", "completed");
 	},
 	"click a.pending": function () {

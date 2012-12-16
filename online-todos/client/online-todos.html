@@ -74,7 +74,7 @@
 		  {{/each}}
 		  <li class="divider"></li>
 		  <li class="nav-header">Tags</li>
-		  {{#each tags}}
+		  {{#each tagList}}
 		  <li class="{{activeTag}}"><a class="tag">{{name}}</a></li>
 		  {{else}}
 		  <li class="disabled"><a>No items are tagged.</a></li>
@@ -102,18 +102,29 @@
 	  </div>
 	  <div class="span8">
 		{{#if selectedList}}
-		<table class="table table-condensed">
+		<table class="table table-condensed table-hover">
 		  <thead>
 			<th>Priority</th>
 			<th>Items</th>
+			<th>Tags</th>
 		  </thead>
 		  <tbody>
 			{{#each items}}
-			<tr>
+			<tr class="itemRow">
 			  <td width="20%">
 				<input type="checkbox" name="itemCheckbox" class="check" {{completed}} />
 				{{priority}}</td>
-			  <td width="80%">{{name}}<button class="close pull-right removeItem">×</button></td>
+			  <td width="50%">{{name}}</td>
+			  <td width="20%">
+				{{#each tags}}
+				{{this}}
+				{{else}}
+				Not tagged.
+				{{/each}}
+			  </td>
+			  <td width="10%">
+				<button class="close pull-right removeItem">×</button>
+			  </td>
 			</tr>
 			{{else}}
 			<tr>
