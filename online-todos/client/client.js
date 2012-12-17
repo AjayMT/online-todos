@@ -86,11 +86,8 @@ Template.todosUI.events({
 	},
 	"click button.saveItem": function () {
 		var name = document.getElementsByName("itemName")[0].value;
-		document.getElementsByName("itemName")[0].value = "";
 		var priority = parseInt(document.getElementsByName("itemPriority")[0].value);
-		document.getElementsByName("itemPriority")[0].value = "";
 		var tagname = document.getElementsByName("itemTag")[0].value;
-		document.getElementsByName("itemTag")[0].value = "";
 		var tags = tagname.split(" ");
 		for (var i = 0; i < tags.length; i++) {
 			if (tags[i] == " " || tags[i] == "") {
@@ -123,6 +120,9 @@ Template.todosUI.events({
 		} else {
 			alert("We got an error. Check your stuff and try again. (Make sure the priority field is a number.)");
 		}
+		document.getElementsByName("itemName")[0].value = "";
+		document.getElementsByName("itemPriority")[0].value = "";
+		document.getElementsByName("itemTag")[0].value = "";
 	},
 	"click button.removeItem": function () {
 		var tags = this.tags;
