@@ -1,5 +1,7 @@
 {
   "packages": {
-    "router": {}
+    "router": {},
+    "bootstrap-with-font-awesome": {},
+    "cool-pkg": {}
   }
 }
