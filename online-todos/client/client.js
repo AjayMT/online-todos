@@ -157,6 +157,11 @@ Template.todosUI.events({
 	},
 	"click a.all": function () {
 		Session.set("currentList", "all");
+	},
+	"keyup input.search-query": function () {
+		var searchVal = document.getElementsByName("itemSearchText")[0].value;
+		Session.set("itemSearch", searchVal);
+		// console.log(Session.get("itemSearch"));
 	}
 });
 
@@ -170,33 +175,49 @@ Template.todosUI.items = function () {
 	
 	if (Session.equals("currentList", "completed")) {
 		if (name == "") {
-			return Items.find({ user: Meteor.userId(), completed: "checked='true'" },
+			return Items.find({ user: Meteor.userId(), completed: "checked='true'",
+								name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 							  { sort: { priority: 1 } });
 		}
 		return Items.find({ user: Meteor.userId(), completed: "checked='true'",
-							tags: name },
+							tags: name,
+							name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 						  { sort: { priority: -1 } });
 	} else if (Session.equals("currentList", "pending")) {
 		if (name == "") {
-			return Items.find({ user: Meteor.userId(), completed: "" },
+			return Items.find({ user: Meteor.userId(), completed: "",
+								name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 							  { sort: { priority: 1 } });
 		}
 		return Items.find({ user: Meteor.userId(), completed: "",
-							tags: name },
+							tags: name,
+							name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 						  { sort: { priority: -1 } });
 	} else if (Session.equals("currentList", "all")) {
 		if (name == "") {
-			return Items.find({ user: Meteor.userId() }, { sort: { priority: -1 } });
+			return Items.find({ user: Meteor.userId(),
+								name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
+							  { sort: { priority: -1 } });
 		}
-		return Items.find({ user: Meteor.userId(), tags: name }, { sort: { priority: -1 } });
+		return Items.find({ user: Meteor.userId(), tags: name,
+							name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
+						  { sort: { priority: -1 } });
 	}
 	if (name == "") {
-		return Items.find({ user: Meteor.userId(), list: Session.get("currentList") },
+		return Items.find({ user: Meteor.userId(), list: Session.get("currentList"),
+							name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 						  { sort: { priority: -1 } });
 	}
 	return Items.find({ list: Session.get("currentList"), user: Meteor.userId(),
-						tags: name },
+						tags: name, name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
 					  { sort: { priority: -1 } });
+}
+
+Template.todosUI.itemSearch = function () {
+	if (Session.get("itemSearch") == null) {
+		return "";
+	}
+	return Session.get("itemSearch");
 }
 
 Template.todosUI.completedList = function () {
