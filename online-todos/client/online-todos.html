@@ -59,7 +59,7 @@
 	</div>
 	<div class="row-fluid">
 	  <div class="span4">
-		<ul class="nav nav-list well well-small">
+		<ul class="nav nav-list">
 		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
 		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
 		  <li class="{{allList}}"><a class="all">All</a></li>
@@ -81,7 +81,7 @@
 		  {{/each}}
 		  <li class="divider"></li>
 		  <li>
-			<a href="#createList" role="button" class="btn" data-toggle="modal">Add List</a>
+			<button type="button" class="btn createListButton btn-success">Add List</button>
 			<div id="createList" class="modal hide fade" tabindex="-1" role="dialog"
 				 aria-labelledby="createListLabel" aria-hidden="true">
 			  <div class="modal-header">
@@ -141,7 +141,7 @@
 		{{#unless completedList}}
 		{{#unless pendingList}}
 		{{#unless allList}}
-		<a href="#addItem" role="button" class="btn btn-primary" data-toggle="modal">Add Item</a>
+		<button type="button" class="btn btn-success addItemButton">Add Item</button>
 		{{/unless}}
 		{{/unless}}
 		{{/unless}}

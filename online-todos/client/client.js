@@ -42,6 +42,12 @@ Template.todosUI.activeList = function () {
 }
 
 Template.todosUI.events({
+	"click button.createListButton": function () {
+		$("#createList").modal("show");
+	},
+	"click button.addItemButton": function () {
+		$("#addItem").modal("show");
+	},
 	"click a.tag": function () {
 		if (Session.equals("currentTag", this._id)) {
 			Session.set("currentTag", "");
