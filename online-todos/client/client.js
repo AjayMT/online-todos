@@ -173,6 +173,10 @@ Template.todosUI.items = function () {
 		var name = "";
 	}
 	
+	if (Session.get("itemSearch") == null) {
+		Session.set("itemSearch", "");
+	}
+	
 	if (Session.equals("currentList", "completed")) {
 		if (name == "") {
 			return Items.find({ user: Meteor.userId(), completed: "checked='true'",
