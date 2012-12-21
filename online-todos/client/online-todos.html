@@ -59,11 +59,10 @@
 	</div>
 	<div class="row-fluid">
 	  <div class="span4">
-		<ul class="nav nav-list">
+		<ul class="nav nav-stacked nav-pills">
 		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
 		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
 		  <li class="{{allList}}"><a class="all">All</a></li>
-		  <li class="divider"></li>
 		  <li class="nav-header">Lists</li>
 		  {{#each lists}}
 		  <li class="{{activeList}}"><a class="list">{{name}}
@@ -79,7 +78,6 @@
 		  {{else}}
 		  <li class="disabled"><a>No items are tagged.</a></li>
 		  {{/each}}
-		  <li class="divider"></li>
 		  <li>
 			<button type="button" class="btn createListButton btn-success">Add List</button>
 			<div id="createList" class="modal hide fade" tabindex="-1" role="dialog"
