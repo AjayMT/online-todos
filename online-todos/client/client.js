@@ -74,14 +74,13 @@ Template.todosUI.events({
 		document.getElementsByName("listName")[0].value = "";
 	},
 	"click button.removeList": function () {
+		var tags = [];
 		var itemCursor = Items.find({ user: Meteor.userId(), list: this._id });
 		itemCursor.forEach(
 			function (item) {
 				for (var i = 0; i < item.tags.length; i++) {
-					var items = Items.find({ user: Meteor.userId(), tags: item.tags[i] }).fetch();
-					if (items.length == 1) {
-						Tags.remove({ name: item.tags[i], user: Meteor.userId() });
-						Session.set("currentTag", "");
+					if (tags.indexOf(item.tags[i]) == -1) {
+						tags.push(item.tags[i]);
 					}
 				}
 			}
@@ -89,6 +88,12 @@ Template.todosUI.events({
 		Items.remove({ list: this._id, user: Meteor.userId() });
 		Lists.remove(this._id);
 		Session.set("currentList", "");
+		for (var i = 0; i < tags.length; i++) {
+			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
+			if (items.length == 0) {
+				Tags.remove({ name: tags[i], user: Meteor.userId() });
+			}
+		}
 	},
 	"click button.saveItem": function () {
 		var name = document.getElementsByName("itemName")[0].value;
