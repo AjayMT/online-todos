@@ -46,6 +46,9 @@ Template.todosUI.events({
 		$("#createList").modal("show");
 	},
 	"click button.addItemButton": function () {
+		document.getElementsByName("itemName")[0].value = "";
+		document.getElementsByName("itemPriority")[0].value = "";
+		document.getElementsByName("itemTag")[0].value = "";
 		$("#addItem").modal("show");
 	},
 	"click a.tag": function () {
