@@ -72,8 +72,14 @@ Template.todosUI.events({
 	},
 	"click button.saveList": function () {
 		var value = document.getElementsByName("listName")[0].value;
-		if (value != "") { Lists.insert({ name: value, user: Meteor.userId() }); }
-		else { alert("You need to enter a name."); }
+		if (value != "") {
+			if (Session.equals("editingList", "") || Session.get("editingList") == null) {
+				Lists.insert({ name: value, user: Meteor.userId() });
+			} else {
+				Lists.update(Session.get("editingList"), { $set: { name: value } });
+			}
+		} else { alert("You need to enter a name."); }
+		Session.set("editingList", "");
 		document.getElementsByName("listName")[0].value = "";
 	},
 	"click button.removeList": function () {
@@ -149,6 +155,11 @@ Template.todosUI.events({
 			}
 		}
 	},
+	"dblclick a.list": function () {
+		document.getElementsByName("listName")[0].value = this.name;
+		$("#createList").modal("show");
+		Session.set("editingList", this._id);
+	},
 	"dblclick tr.itemRow": function () {
 		$("#addItem").modal("show");
 		document.getElementsByName("itemName")[0].value = this.name;
@@ -175,7 +186,6 @@ Template.todosUI.events({
 	"keyup input.search-query": function () {
 		var searchVal = document.getElementsByName("itemSearchText")[0].value;
 		Session.set("itemSearch", searchVal);
-		// console.log(Session.get("itemSearch"));
 	}
 });
 
