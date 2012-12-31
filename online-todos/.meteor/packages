@@ -8,8 +8,6 @@ insecure
 preserve-inputs
 accounts-base
 accounts-password
-accounts-facebook
-accounts-twitter
-accounts-google
 accounts-ui
 router
+email
