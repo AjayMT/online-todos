@@ -41,6 +41,13 @@ Template.todosUI.activeList = function () {
 	return "";
 }
 
+Template.todosUI.todayList = function () {
+	if (Session.equals("currentList", "today")) {
+		return "active";
+	}
+	return "";
+}
+
 Template.todosUI.events({
 	"click input.itemDate": function () {
 		$(".itemDate").datepicker("show");
@@ -53,6 +60,9 @@ Template.todosUI.events({
 		document.getElementsByName("itemPriority")[0].value = "";
 		document.getElementsByName("itemTag")[0].value = "";
 		$("#addItem").modal("show");
+	},
+	"click a.today": function () {
+		Session.set("currentList", "today");
 	},
 	"click a.tag": function () {
 		if (Session.equals("currentTag", this._id)) {
@@ -110,6 +120,7 @@ Template.todosUI.events({
 	"click button.saveItem": function () {
 		var name = document.getElementsByName("itemName")[0].value;
 		var priority = parseInt(document.getElementsByName("itemPriority")[0].value);
+		var date = document.getElementsByName("itemDate")[0].value;
 		var tagname = document.getElementsByName("itemTag")[0].value;
 		var tags = tagname.split(" ");
 		for (var i = 0; i < tags.length; i++) {
@@ -126,11 +137,12 @@ Template.todosUI.events({
 			}
 			if (Session.equals("editingItem", "") || Session.get("editingItem") == null) {
 				Items.insert({ list: Session.get("currentList"), user: Meteor.userId(),
-							   name: name, priority: priority, completed: "", tags: tags });
+							   name: name, priority: priority, completed: "", tags: tags, date: date });
 			} else {
 				Items.update(Session.get("editingItem"), { $set: { name: name,
 																   priority: priority,
-																   tags: tags } });
+																   tags: tags,
+																   date: date } });
 			}
 			var allTags = Tags.find({ user: Meteor.userId() }).fetch();
 			for (var i = 0; i < allTags.length; i++) {
@@ -146,6 +158,7 @@ Template.todosUI.events({
 		document.getElementsByName("itemName")[0].value = "";
 		document.getElementsByName("itemPriority")[0].value = "";
 		document.getElementsByName("itemTag")[0].value = "";
+		document.getElementsByName("itemDate")[0].value = "";
 	},
 	"click button.removeItem": function () {
 		var tags = this.tags;
@@ -167,6 +180,7 @@ Template.todosUI.events({
 		$("#addItem").modal("show");
 		document.getElementsByName("itemName")[0].value = this.name;
 		document.getElementsByName("itemPriority")[0].value = this.priority;
+		document.getElementsByName("itemDate")[0].value = this.date;
 		for (var i = 0; i < this.tags.length; i++) {
 			var value = document.getElementsByName("itemTag")[0].value;
 			if (value != "") {
@@ -232,6 +246,25 @@ Template.todosUI.items = function () {
 		}
 		return Items.find({ user: Meteor.userId(), tags: name,
 							name: { $regex: ".*" + Session.get("itemSearch") + ".*" } },
+						  { sort: { priority: -1 } });
+	} else if (Session.equals("currentList", "today")) {
+		var dateObj = new Date();
+		var dateDay = dateObj.getDate().toString();
+		if (dateDay.length == 1) {
+			dateDay = "0" + dateDay;
+		}
+		var dateMonth = (dateObj.getMonth() + 1).toString();
+		if (dateMonth.length == 1) {
+			dateMonth = "0" + dateMonth;
+		}
+		var date = dateMonth + "/" + dateDay + "/" + dateObj.getFullYear().toString()
+		if (name == "") {
+			return Items.find({ user: Meteor.userId(),
+								name: { $regex: ".*" + Session.get("itemSearch") + ".*" }, date: date },
+							  { sort: { priority: -1 } });
+		} 
+		return Items.find({ user: Meteor.userId(), tags: name,
+							name: { $regex: ".*" + Session.get("itemSearch") + ".*" }, date: date },
 						  { sort: { priority: -1 } });
 	}
 	if (name == "") {

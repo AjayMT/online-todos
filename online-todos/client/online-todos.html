@@ -60,6 +60,7 @@
 	<div class="row-fluid">
 	  <div class="span4">
 		<ul class="nav nav-list well">
+		  <li class="{{todayList}}"><a class="today">Today</a></li>
 		  <li class="{{completedList}}"><a class="completed">Completed</a></li>
 		  <li class="{{pendingList}}"><a class="pending">Pending</a></li>
 		  <li class="{{allList}}"><a class="all">All</a></li>
@@ -159,10 +160,10 @@
 		  <div class="modal-body">
 			<input type="text" name="itemName" placeholder="Item name..." /><br />
 			<input type="text" name="itemPriority" placeholder="Priority..." /><br />
-			<div id="dp3" class="input date" data-date="1-1-2013"
+			<div id="dp3" class="input date" data-date=""
 				 data-date-format="dd-mm-yyyy">
-			  <input type="text" name="itemDate" value="1-1-2013"
-					 class="span2 itemDate" size="16" />
+			  <input type="text" name="itemDate" value="" placeholder="Item date..."
+					 class="itemDate" size="16" />
 			</div>
 			<textarea name="itemTag" rows="3" placeholder="Add tags to this item..." />
 			<br />Tags are case-sensitive. That means 'school' is different from 'School'. Separate tags with a single space.
