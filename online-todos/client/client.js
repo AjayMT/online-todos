@@ -42,6 +42,9 @@ Template.todosUI.activeList = function () {
 }
 
 Template.todosUI.events({
+	"click input.itemDate": function () {
+		$(".itemDate").datepicker("show");
+	},
 	"click button.createListButton": function () {
 		$("#createList").modal("show");
 	},

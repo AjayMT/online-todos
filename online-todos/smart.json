@@ -2,6 +2,7 @@
   "packages": {
     "router": {},
     "bootstrap-with-font-awesome": {},
-    "cool-pkg": {}
+    "cool-pkg": {},
+    "bootstrap-datepicker": {}
   }
 }

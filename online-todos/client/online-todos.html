@@ -109,16 +109,20 @@
 		  <thead>
 			<th>Priority</th>
 			<th>Items</th>
+			<th>Date</th>
 			<th>Tags</th>
 		  </thead>
 		  <tbody>
 			{{#each items}}
 			<tr class="itemRow">
-			  <td width="20%">
+			  <td width="10%">
 				<input type="checkbox" name="itemCheckbox" class="check" {{completed}} />
 				{{priority}}</td>
-			  <td width="50%">{{name}}</td>
-			  <td width="20%">
+			  <td width="40%">{{name}}</td>
+			  <td width="15%">
+				{{#if date}}{{date}}{{else}}No date specified.{{/if}}
+			  </td>
+			  <td width="25%">
 				{{#each tags}}
 				{{this}}
 				{{else}}
@@ -155,8 +159,13 @@
 		  <div class="modal-body">
 			<input type="text" name="itemName" placeholder="Item name..." /><br />
 			<input type="text" name="itemPriority" placeholder="Priority..." /><br />
-			<textarea name="itemTag" rows="3" placeholder="Separate tags with a single space..." />
-			<br />Tags are case-sensitive. That means 'school' is different from 'School'.
+			<div id="dp3" class="input date" data-date="1-1-2013"
+				 data-date-format="dd-mm-yyyy">
+			  <input type="text" name="itemDate" value="1-1-2013"
+					 class="span2 itemDate" size="16" />
+			</div>
+			<textarea name="itemTag" rows="3" placeholder="Add tags to this item..." />
+			<br />Tags are case-sensitive. That means 'school' is different from 'School'. Separate tags with a single space.
 		  </div>
 		  <div class="modal-footer">
 			<button class="btn btn-primary saveItem"
