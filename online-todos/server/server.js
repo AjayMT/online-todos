@@ -25,6 +25,16 @@ Meteor.startup(function () {
 	});
 	setInterval(function () {
 		cursor.forEach(function (user) {
+			var dateObj = new Date();
+			var dateDay = dateObj.getDate().toString();
+			if (dateDay.length == 1) {
+				dateDay = "0" + dateDay;
+			}
+			var dateMonth = (dateObj.getMonth() + 1).toString();
+			if (dateMonth.length == 1) {
+				dateMonth = "0" + dateMonth;
+			}
+			var date = dateMonth + "/" + dateDay + "/" + dateObj.getFullYear().toString()
 			var html = "Hey there,<br />Here's what you have to do today -<br /><ul>";
 			var items = Items.find({ user: user._id }).fetch();
 			for (var i = 0; i < items.length; i++) {
