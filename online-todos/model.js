@@ -20,7 +20,7 @@ cursor.forEach(function (user) {
 		html += "<li>" + items[i].name + "</li>";
 	}
 	html += "</ul><br />Thanks,<br />The Online-Todos team."
-	if (items.length > 0) {
+	if (items.length > 0 && Meteor.isServer) {
 		Email.send({ from: "noreply@online-todos.com",
 					 to: user.emails[0].address,
 					 subject: "Today's to-dos", html: html });
@@ -47,7 +47,7 @@ setInterval(function () {
 				html += "<li>" + items[i].name + "</li>";
 			}
 			html += "</ul><br />Thanks,<br />The Online-Todos team."
-			if (items.length > 0) {
+			if (items.length > 0 && Meteor.isServer) {
 				Email.send({ from: "noreply@online-todos.com",
 							 to: user.emails[0].address,
 							 subject: "Today's to-dos", html: html });
