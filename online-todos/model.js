@@ -35,7 +35,8 @@ Meteor.call("alert");
 
 Meteor.setInterval(function () {
 	var cDate = new Date();
-	if (cDate.getHours() == 0) {
+	if (cDate.getHours() == 0 && cDate.getMinutes() == 0 &&
+		cDate.getSeconds() == 0) {
 		Meteor.call("alert");
 	}
-}, 6000);
+}, 100);
