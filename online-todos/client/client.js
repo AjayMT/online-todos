@@ -59,10 +59,20 @@ Template.todosUI.events({
 		document.getElementsByName("itemName")[0].value = "";
 		document.getElementsByName("itemPriority")[0].value = "";
 		document.getElementsByName("itemTag")[0].value = "";
+		document.getElementsByName("itemDate")[0].value = "";
 		$("#addItem").modal("show");
 	},
 	"click a.today": function () {
 		Session.set("currentList", "today");
+	},
+	"click button.close": function () {
+		Session.set("editingItem", "");
+		Session.set("editingList", "");
+		document.getElementsByName("itemName")[0].value = "";
+		document.getElementsByName("itemPriority")[0].value = "";
+		document.getElementsByName("itemTag")[0].value = "";
+		document.getElementsByName("itemDate")[0].value = "";
+		document.getElementsByName("listName")[0].value = "";
 	},
 	"click a.tag": function () {
 		if (Session.equals("currentTag", this._id)) {
