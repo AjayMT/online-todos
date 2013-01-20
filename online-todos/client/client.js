@@ -1,23 +1,19 @@
 Meteor.Router.add({
 	"/": function () {
-		if (Meteor.user()) {
-			Meteor.Router.to("/todos/");
-			return "todosUI";
-		}
-		return "loginForm";
-	},
-	"/todos": function () {
 		if (!Meteor.user()) {
-			Meteor.Router.to("/");
+			Meteor.Router.to("/signup/");
 			return "loginForm";
 		}
 		return "todosUI";
+	},
+	"/signup": function () {
+		if (Meteor.user()) {
+			Meteor.Router.to("/");
+			return "todosUI";
+		}
+		return "loginForm";
 	}
 });
-
-Template.loginForm.destroyed = function () {
-	Meteor.Router.to("/todos/");
-}
 
 Template.todosUI.tagList = function () {
 	return Tags.find({ user: Meteor.userId() }, { sort: { name: 1 } });
