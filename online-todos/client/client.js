@@ -1,3 +1,7 @@
+Meteor.subscribe("lists");
+Meteor.subscribe("tags");
+Meteor.subscribe("items");
+
 Meteor.Router.add({
 	"/": function () {
 		if (!Meteor.user()) {
