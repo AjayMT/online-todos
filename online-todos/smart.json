@@ -3,6 +3,7 @@
     "router": {},
     "bootstrap-with-font-awesome": {},
     "cool-pkg": {},
-    "bootstrap-datepicker": {}
+    "bootstrap-datepicker": {},
+    "font-awesome": {}
   }
 }
