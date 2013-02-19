@@ -1,5 +1,5 @@
 <head>
-  <title>My To-Dos</title>
+  <title>Got2Do</title>
 </head>
 
 <body>
@@ -7,51 +7,24 @@
 </body>
 
 <template name="loginForm">
-  <center>
-	<div class="container-narrow">
-	  <div class="masthead">
-		<h3 class="muted">Online To-Dos</h3>
-	  </div>
-	  <hr />
-	  <div class="jumbotron">
-		<h1>Your To-Dos, All On The Web</h1>
-		<p class="lead">Know what needs to be done, no matter where you are.
-		  <br />{{loginButtons}}</p>
-	  </div>
-	  <hr />
-	  <div class="row-fluid marketing">
-		<div class="span6">
-		  <h4>Create multiple lists</h4>
-		  <p>
-			Grocery lists getting mixed up with your work related to-dos?<br />
-			Sort out stuff with multiple lists.
-		  </p><br />
-		  <h4>See what's done and what's not</h4>
-		  <p>
-			Want to know everything you've done and everything you need to?<br />
-			See the 'Complete', 'Pending' and 'All' lists for all the to-dos that are completed and
-			the all the to-dos that aren't.
-		  </p><br />
-		  <h4>See what you need to do today</h4>
-		  <p>Add dates to items, and see the 'Today' list for everything you need to do today.</p>
+  <div class="loginForm">
+	<center>
+	  <div class="container-fluid">
+		<div class="row">
+		  <h1>Got2Do</h1>
+		  <p class="lead">Manage your to-dos with tags, lists, regex searching,
+			dates, and priority based sorting.<br />{{loginButtons}}</p>
 		</div>
-		<div class="span6">
-		  <h4>Sort to-dos by priority</h4>
-		  <p>
-			Your to-dos are sorted by priority, so you can see what's important and what can wait.
-		  </p><br />
-		  <h4>Filter to-dos by tag</h4>
-		  <p>
-			Sure, you have multiple lists. But you can still have lots of to-dos in each list.
-			Or maybe a to-do from one list has something in common with a to-do from another.
-			Tag your to-dos and filter them by tag to make life easier.
-		  </p>
-		  <h4>Powerful regex searching</h4>
-		  <p>Search for items normally, or do advanced regex searches. Either way, you'll find what you're looking for.</p>
+		<hr class="rowDivider" />
+		<div class="row">
+		  This app was created with <a href="http://meteor.com">Meteor</a> and
+		  <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a> by
+		  <a href="http://twitter.com/ajaymadhusudan">@ajaymadhusudan</a>. If you
+		  would like to say anything, please leave a tweet.
 		</div>
 	  </div>
-	</div>
-  </center>
+	</center>
+  </div>
 </template>
 
 <template name="todosUI">

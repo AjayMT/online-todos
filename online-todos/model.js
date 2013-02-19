@@ -44,7 +44,7 @@ Tags.allow({
 			return tag.user == userId;
 		});
 	},
-	remove: function () {
+	remove: function (userId, tags) {
 		return _.all(tags, function (tag) {
 			return tag.user == userId;
 		});
