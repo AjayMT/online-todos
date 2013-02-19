@@ -1,8 +1,7 @@
-# Online To-Dos (In Progress)
+# Online To-Dos
 
 This is a web app that allows people to manage their todo lists. They sign in, and see a list of their todos. They can change
-items in a list, filter them by tags, create/remove lists, etc. The app is currently in progress, but hopefully it won't
-take long to finish.
+items in a list, filter them by tags, create/remove lists, etc.
 
 ## Downloading And Running
 
