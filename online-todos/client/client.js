@@ -117,13 +117,14 @@ Template.todosUI.events({
 				}
 			}
 		);
-		Items.remove({ list: this._id, user: Meteor.userId() });
+		Meteor.call("clearList", [this._id]);
 		Lists.remove(this._id);
 		Session.set("currentList", "");
 		for (var i = 0; i < tags.length; i++) {
 			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
 			if (items.length == 0) {
-				Tags.remove({ name: tags[i], user: Meteor.userId() });
+				var tagId = Tags.findOne({ name: tags[i], user: Meteor.userId() })._id;
+				Tags.remove(tagId);
 			}
 		}
 	},
@@ -158,7 +159,8 @@ Template.todosUI.events({
 			for (var i = 0; i < allTags.length; i++) {
 				var items = Items.find({ user: Meteor.userId(), tags: allTags[i].name }).fetch();
 				if (items.length == 0) {
-					Tags.remove({ user: Meteor.userId(), name: allTags[i].name });
+					var tagId = Tags.findOne({ user: Meteor.userId(), name: allTags[i].name })._id;
+					Tags.remove(tagId);
 				}
 			}
 			Session.set("editingItem", "");
@@ -176,7 +178,8 @@ Template.todosUI.events({
 		for (var i = 0; i < tags.length; i++) {
 			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
 			if (items.length == 0) {
-				Tags.remove({ name: tags[i], user: Meteor.userId() });
+				var tagId = Tags.findOne({ name: tags[i], user: Meteor.userId() })._id;
+				Tags.remove(tagId);
 				Session.set("currentTag", "");
 			}
 		}
