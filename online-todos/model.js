@@ -4,7 +4,26 @@ Tags = new Meteor.Collection("tags");
 
 Meteor.methods({
 	"clearList": function (listId) {
+		var tags = [];
+		var itemCursor = Items.find({ user: this.userId, list: listId });
+		itemCursor.forEach(
+			function (item) {
+				for (var i = 0; i < item.tags.length; i++) {
+					if (tags.indexOf(item.tags[i]) == -1) {
+						tags.push(item.tags[i]);
+					}
+				}
+			}
+		);
 		Items.remove({ list: listId, user: this.userId });
+		Lists.remove(listId);
+		for (var i = 0; i < tags.length; i++) {
+			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
+			if (items.length == 0) {
+				var tagId = Tags.findOne({ name: tags[i], user: Meteor.userId() })._id;
+				Tags.remove(tagId);
+			}
+		}
 	}
 });
 
@@ -40,7 +59,7 @@ Tags.allow({
 	update: function (userId, tag, field, modifier) {
 		return tag.user == userId;
 	},
-	remove: function (userId, tags) {
+	remove: function (userId, tag) {
 		return tag.user == userId;
 	}
 });

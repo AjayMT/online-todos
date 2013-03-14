@@ -106,27 +106,8 @@ Template.todosUI.events({
 		document.getElementsByName("listName")[0].value = "";
 	},
 	"click button.removeList": function () {
-		var tags = [];
-		var itemCursor = Items.find({ user: Meteor.userId(), list: this._id });
-		itemCursor.forEach(
-			function (item) {
-				for (var i = 0; i < item.tags.length; i++) {
-					if (tags.indexOf(item.tags[i]) == -1) {
-						tags.push(item.tags[i]);
-					}
-				}
-			}
-		);
-		Meteor.call("clearList", [this._id]);
-		Lists.remove(this._id);
+		Meteor.call("clearList", this._id);
 		Session.set("currentList", "");
-		for (var i = 0; i < tags.length; i++) {
-			var items = Items.find({ user: Meteor.userId(), tags: tags[i] }).fetch();
-			if (items.length == 0) {
-				var tagId = Tags.findOne({ name: tags[i], user: Meteor.userId() })._id;
-				Tags.remove(tagId);
-			}
-		}
 	},
 	"click button.saveItem": function () {
 		var name = document.getElementsByName("itemName")[0].value;
